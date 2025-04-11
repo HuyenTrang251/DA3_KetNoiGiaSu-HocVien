@@ -12,7 +12,7 @@ var cors = require('cors');
 
 var app = express(); 
 
-const SECRET_KEY = 'admin';
+const SECRET_KEY = process.env.SECRET_KEY;;
 
 app.use(bodyParser.json());
 
@@ -44,6 +44,9 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+const UPLOADS_DIR = 'D:/uploads';
+app.use('/uploads', express.static(UPLOADS_DIR));
 
 const db = require("./common/db");
 
@@ -143,19 +146,19 @@ app.listen(PORT, () => {
 module.exports = app;
 
 
-const users = [
-    { id: 1, username: 'trang', password: '123' },
-    { id: 2, username: 'user2', password: 'password2' }
-  ];
+// const users = [
+//     { id: 1, username: 'trang', password: '123' },
+//     { id: 2, username: 'user2', password: 'password2' }
+//   ];
   
-  app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    const user = users.find(u => u.username === username && u.password === password);
+//   app.post('/login', (req, res) => {
+//     const { username, password } = req.body;
+//     const user = users.find(u => u.username === username && u.password === password);
   
-    if (!user) {
-      return res.status(400).send('Tên người dùng hoặc mật khẩu không đúng');
-    }
+//     if (!user) {
+//       return res.status(400).send('Tên người dùng hoặc mật khẩu không đúng');
+//     }
   
-    const token = jwt.sign({ username: user.username }, SECRET_KEY, { expiresIn: '1h' });
-    res.json({ token });
-  });
+//     const token = jwt.sign({ username: user.username }, SECRET_KEY, { expiresIn: '1h' });
+//     res.json({ token });
+//   });
