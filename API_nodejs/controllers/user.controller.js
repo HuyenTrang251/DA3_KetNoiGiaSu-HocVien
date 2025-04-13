@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+var jwt = require('jsonwebtoken'); 
 
 module.exports = {
   getAll: (req, res) => {
@@ -32,6 +33,26 @@ module.exports = {
     const id = req.params.id;
     User.delete(id, (result) => {
       res.send(result);
+    });
+  },
+
+  login: (req, res) => {
+    // const SECRET_KEY = process.env.SECRET_KEY;
+    const {username, password} = req.body;
+    User.verifyPassword(username, password, (err, result) => {
+      if (err) {
+        return res.status(500).send({message: "Lỗi máy chủ"});
+      }
+      if (result.success) {
+        const token = jwt.sign(
+          {userId: result.userId, role: result.role},
+          "SECRET_KEY", {expiresIn: "1h"}
+        );
+        res.send({success: true, token: token, userdata: {role: result.role}});
+      }
+      else {
+        res.status(401).send ({ message: result.message});
+      }
     });
   }
 };

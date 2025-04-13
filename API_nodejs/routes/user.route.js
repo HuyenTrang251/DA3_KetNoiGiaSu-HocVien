@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const userController = require("../controllers/user.controller");
+const xacthuc = require('../middleware/authentic');
 const multer = require('multer');
 const path = require('path');
 
@@ -18,7 +19,7 @@ const upload = multer({ storage: storage });
 
 
 router.get('/', userController.getAll);
-router.get('/:id', userController.getById);
+router.get('/:id',xacthuc, userController.getById);
 
 // Sử dụng middleware upload.single trước userController.insert và userController.update
 router.post('/', upload.single('img'), (req, res, next) => {
@@ -36,5 +37,11 @@ router.put('/', upload.single('img'), (req, res, next) => {
 }, userController.update);
 
 router.delete('/:id', userController.delete);
+// router.delete('/:id', xacthuc, (req, res) => {
+//   console.log(req.user);
+//   userController.delete(req, res);
+// });
+
+router.post('/login', userController.login);
 
 module.exports = router;

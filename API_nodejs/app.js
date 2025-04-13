@@ -12,9 +12,10 @@ var cors = require('cors');
 
 var app = express(); 
 
-const SECRET_KEY = process.env.SECRET_KEY;;
+const SECRET_KEY = process.env.SECRET_KEY;
 
 app.use(bodyParser.json());
+
 
 const xacthuc = (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -27,15 +28,16 @@ const xacthuc = (req, res, next) => {
         if (err) return res.sendStatus(403);  
 
         req.user = user;
-        if (req.user.role === 'admin') {
-            return res.json({ role: 'admin', message: 'Chào mừng admin!' });
-        } else if (req.user.role === 'tutor') {
-            return res.json({ role: 'tutor', message: 'Chào mừng tutor!' });
-        } else if (req.user.role === 'student') {
-            return res.json({ role: 'student', message: 'Chào mừng student!' });
-        } else {
-            return res.status(400).send('Vai trò không hợp lệ');
-        }
+        next();
+        // if (req.user.role === 'admin') {
+        //     return res.json({ role: 'admin', message: 'Chào mừng admin!' });
+        // } else if (req.user.role === 'tutor') {
+        //     return res.json({ role: 'tutor', message: 'Chào mừng tutor!' });
+        // } else if (req.user.role === 'student') {
+        //     return res.json({ role: 'student', message: 'Chào mừng student!' });
+        // } else {
+        //     return res.status(400).send('Vai trò không hợp lệ');
+        // }
     });
 };
 
@@ -48,34 +50,34 @@ app.use(cors({
 const UPLOADS_DIR = 'D:/uploads';
 app.use('/uploads', express.static(UPLOADS_DIR));
 
-const db = require("./common/db");
+// const db = require("./common/db");
 
-app.post('/login', (req, res) => {
-  const { username, password } = req.body;
+// app.post('/login', (req, res) => {
+//   const { username, password } = req.body;
 
-  // Truy vấn cơ sở dữ liệu để tìm người dùng
-    const sqlString = "SELECT * FROM user WHERE email = ? AND password = ?";
-    db.query(sqlString, [username, password], (err, results) => {
-      if (err) {
-        console.error('Lỗi truy vấn cơ sở dữ liệu:', err);
-        return res.status(500).send('Lỗi hệ thống');
-      }
+//   // Truy vấn cơ sở dữ liệu để tìm người dùng
+//     const sqlString = "SELECT * FROM user WHERE email = ? AND password = ?";
+//     db.query(sqlString, [username, password], (err, results) => {
+//       if (err) {
+//         console.error('Lỗi truy vấn cơ sở dữ liệu:', err);
+//         return res.status(500).send('Lỗi hệ thống');
+//       }
 
-      if (results.length === 0) {
-        return res.status(400).send('Tên người dùng hoặc mật khẩu không đúng');
-      }
+//       if (results.length === 0) {
+//         return res.status(400).send('Tên người dùng hoặc mật khẩu không đúng');
+//       }
 
-      // Lấy thông tin người dùng từ kết quả truy vấn
-      const user = results[0];
+//       // Lấy thông tin người dùng từ kết quả truy vấn
+//       const user = results[0];
 
-      // Tạo token JWT
-      const token = jwt.sign({ username: user.email, role: user.role }, SECRET_KEY, { expiresIn: '1h' });
+//       // Tạo token JWT
+//       const token = jwt.sign({ username: user.email, role: user.role }, SECRET_KEY, { expiresIn: '1h' });
 
-      // Trả về token
-      // res.json({token});
-      res.json({token: token, userdata: user});
-    });
-  });
+//       // Trả về token
+//       // res.json({token});
+//       res.json({token: token, userdata: user});
+//     });
+//   });
 
 
   const storage = multer.diskStorage({
@@ -113,7 +115,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/availabilitys',xacthuc, availabilityRouter);
 app.use('/bookings', bookingRouter);
-app.use('/posts', postRouter);
+app.use('/posts',xacthuc, postRouter);
 app.use('/responses', responseRouter);
 app.use('/reviews', reviewRouter);
 app.use('/students', studentRouter);
