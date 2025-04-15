@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const userController = require("../controllers/user.controller");
-const xacthuc = require('../middleware/authentic');
+const xacthuc = require('../middleware/authentic.js');
 const multer = require('multer');
 const path = require('path');
 
@@ -18,8 +18,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-router.get('/', userController.getAll);
-router.get('/:id',xacthuc, userController.getById);
+router.get('/',xacthuc(['admin', 'học viên', 'gia sư']), userController.getAll);
+router.get('/:id',xacthuc(['admin']), userController.getById);
 
 // Sử dụng middleware upload.single trước userController.insert và userController.update
 router.post('/', upload.single('img'), (req, res, next) => {
@@ -29,14 +29,14 @@ router.post('/', upload.single('img'), (req, res, next) => {
   next(); 
 }, userController.insert);
 
-router.put('/', upload.single('img'), (req, res, next) => {
+router.put('/',xacthuc(['admin']), upload.single('img'), (req, res, next) => {
   if (req.file) {
     req.body.img = req.file.filename;
   }
   next();
 }, userController.update);
 
-router.delete('/:id', userController.delete);
+router.delete('/:id',xacthuc(['admin']), userController.delete);
 // router.delete('/:id', xacthuc, (req, res) => {
 //   console.log(req.user);
 //   userController.delete(req, res);
