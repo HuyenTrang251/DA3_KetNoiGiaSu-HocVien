@@ -18,7 +18,10 @@ module.exports = {
   insert: (req, res) => {
     const user = req.body;
     User.insert(user, (result) => {
-      res.send(result);
+      if (result.error) {
+        return res.status(500).sent({message: "Lỗi khi thêm người dùng", error: result.error});
+      }
+      res.status(201).send({message: "Thêm thành công", user: {id: result.id, ...user} });
     });
   },
 
@@ -48,7 +51,7 @@ module.exports = {
           {userId: result.userId, role: result.role},
           "SECRET_KEY", {expiresIn: "1h"}
         );
-        res.send({success: true, token: token, userdata: {role: result.role}});
+        res.send({success: true, token: token, userdata: {role: result.role, id: result.userId, img: result.img, name: result.name }});
       }
       else {
         res.status(401).send ({ message: result.message});

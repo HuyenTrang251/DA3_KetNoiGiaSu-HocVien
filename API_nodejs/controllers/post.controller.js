@@ -1,8 +1,15 @@
 const Post = require("../models/post.model");
 
 module.exports = {
-  getAll: (req, res) => {
-    Post.getAll((result) => {
+  // getAll: (req, res) => {
+  //   Post.getAll((result) => {
+  //     res.send(result);
+  //   });
+  // },
+
+  getPostByUserID: (req, res) => {
+    const id = req.params.id;
+    Post.getPostByUserID(id, (result) => {
       res.send(result);
     });
   },

@@ -74,25 +74,25 @@ user.insert = (user, callBack) => {
 };
 
 user.update = (user, callBack) => {
-  // const sqlString = "UPDATE user SET ? WHERE id_user = ?";
-  // db.query(sqlString, [user, user.id_user], (err, res) => {
-  //   if (err) {
-  //     callBack(err);
-  //     return;
-  //   }
-  //   callBack("cập nhật user id = " + user.id_user + " thành công");
-  // });
-
-  db.query(
-    "CALL UpdateUser(?,?,?,?,?,?",
-    [user.id_user, user.img, user.full_name, user.email, user.phone, user.password],
-    (err, res) => {
-      if (err) {
-        return callBack(err);
-      }
-      callBack("Cập nhật user id = "+ user.id_user +" thành công");
+  const sqlString = "UPDATE user SET ? WHERE id_user = ?";
+  db.query(sqlString, [user, user.id_user], (err, res) => {
+    if (err) {
+      callBack(err);
+      return;
     }
-  )
+    callBack("cập nhật user id = " + user.id_user + " thành công");
+  });
+
+//   db.query(
+//     "CALL UpdateUser(?,?,?,?,?,?",
+//     [user.id_user, user.img, user.full_name, user.email, user.phone, user.password],
+//     (err, res) => {
+//       if (err) {
+//         return callBack(err);
+//       }
+//       callBack("Cập nhật user id = "+ user.id_user +" thành công");
+//     }
+//   )
 };
 
 user.delete = (id, callBack) => {
@@ -123,12 +123,14 @@ user.verifyPassword = (username, password, callback) => {
     const hashedPasswordFromDB = results[0][0].password;
     const role = results[0][0].role;
     const userId = results[0][0].id_user;
+    const img = results[0][0].img;
+    const name = results[0][0].full_name;
     bcrypt.compare(password, hashedPasswordFromDB, (err, result) => {
       if (err) {
         return callback(err);
       }
       if (results) {
-        return callback(null, {success: true, role: role, userId: userId});
+        return callback(null, {success: true, role: role, userId: userId, img: img, name: name});
       }
       else {
         return callback(null, {success: false, message: "Mật khẩu không đúng"});

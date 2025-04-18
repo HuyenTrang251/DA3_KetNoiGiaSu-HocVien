@@ -3,7 +3,8 @@ var router = express.Router();
 const postController = require("../controllers/post.controller");
 
 /* GET users listing. */
-router.get('/', postController.getAll);
+// router.get('/', postController.getAll);
+router.get('/getByIdUser/:id', postController.getPostByUserID)
 router.get('/:id', postController.getById);
 router.post('/', postController.insert);
 router.put('/:id', postController.update);

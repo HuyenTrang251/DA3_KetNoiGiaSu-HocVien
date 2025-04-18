@@ -17,29 +17,29 @@ const SECRET_KEY = process.env.SECRET_KEY;
 app.use(bodyParser.json());
 
 
-const xacthuc = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    // console.log(authHeader);
-    const token = authHeader && authHeader.split(' ')[1];  
+// const xacthuc = (req, res, next) => {
+//     const authHeader = req.headers['authorization'];
+//     // console.log(authHeader);
+//     const token = authHeader && authHeader.split(' ')[1];  
 
-    if (token == null) return res.sendStatus(401);  
+//     if (token == null) return res.sendStatus(401);  
 
-    jwt.verify(token, SECRET_KEY, (err, user) => {
-        if (err) return res.sendStatus(403);  
+//     jwt.verify(token, SECRET_KEY, (err, user) => {
+//         if (err) return res.sendStatus(403);  
 
-        req.user = user;
-        next();
-        // if (req.user.role === 'admin') {
-        //     return res.json({ role: 'admin', message: 'Chào mừng admin!' });
-        // } else if (req.user.role === 'tutor') {
-        //     return res.json({ role: 'tutor', message: 'Chào mừng tutor!' });
-        // } else if (req.user.role === 'student') {
-        //     return res.json({ role: 'student', message: 'Chào mừng student!' });
-        // } else {
-        //     return res.status(400).send('Vai trò không hợp lệ');
-        // }
-    });
-};
+//         req.user = user;
+//         next();
+//         // if (req.user.role === 'admin') {
+//         //     return res.json({ role: 'admin', message: 'Chào mừng admin!' });
+//         // } else if (req.user.role === 'tutor') {
+//         //     return res.json({ role: 'tutor', message: 'Chào mừng tutor!' });
+//         // } else if (req.user.role === 'student') {
+//         //     return res.json({ role: 'student', message: 'Chào mừng student!' });
+//         // } else {
+//         //     return res.status(400).send('Vai trò không hợp lệ');
+//         // }
+//     });
+// };
 
 app.use(cors({
   origin: '*', 
@@ -113,9 +113,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Các router khác
 app.use('/', indexRouter);
-app.use('/availabilitys',xacthuc, availabilityRouter);
+app.use('/availabilitys', availabilityRouter);
 app.use('/bookings', bookingRouter);
-app.use('/posts',xacthuc, postRouter);
+app.use('/posts', postRouter);
 app.use('/responses', responseRouter);
 app.use('/reviews', reviewRouter);
 app.use('/students', studentRouter);

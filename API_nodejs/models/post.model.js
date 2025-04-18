@@ -27,13 +27,13 @@ post.getById = (id, callback) => {
   });
 };
 
-post.getAll = (callback) => {
-  const sqlString = "SELECT * FROM post ";
-  db.query(sqlString, (err, result) => {
+post.getPostByUserID = (id, callback) => {
+  // const sqlString = "SELECT * FROM post ";
+  db.query("CALL GetPostsByUserId(?)", id, (err, result) => {
     if (err) {
       return callback(err);
     }
-    callback(result);
+    callback(result[0]);
   });
 };
 

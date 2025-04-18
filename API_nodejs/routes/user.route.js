@@ -18,18 +18,20 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-router.get('/',xacthuc(['admin', 'học viên', 'gia sư']), userController.getAll);
-router.get('/:id',xacthuc(['admin']), userController.getById);
+router.get('/', userController.getAll);
+router.get('/:id',xacthuc(['admin', 'học viên']), userController.getById);
 
 // Sử dụng middleware upload.single trước userController.insert và userController.update
-router.post('/', upload.single('img'), (req, res, next) => {
+router.post('/img', upload.single('img'), (req, res, next) => {
   if (req.file) {
     req.body.img = req.file.filename; 
   }
   next(); 
 }, userController.insert);
 
-router.put('/',xacthuc(['admin']), upload.single('img'), (req, res, next) => {
+router.post('/', userController.insert);
+
+router.put('/', upload.single('img'), (req, res, next) => {
   if (req.file) {
     req.body.img = req.file.filename;
   }
@@ -37,10 +39,6 @@ router.put('/',xacthuc(['admin']), upload.single('img'), (req, res, next) => {
 }, userController.update);
 
 router.delete('/:id',xacthuc(['admin']), userController.delete);
-// router.delete('/:id', xacthuc, (req, res) => {
-//   console.log(req.user);
-//   userController.delete(req, res);
-// });
 
 router.post('/login', userController.login);
 
