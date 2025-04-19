@@ -1,11 +1,17 @@
 const Post = require("../models/post.model");
 
 module.exports = {
-  // getAll: (req, res) => {
-  //   Post.getAll((result) => {
-  //     res.send(result);
-  //   });
-  // },
+  getAll: (req, res) => {
+    Post.getAll((result) => {
+      res.send(result);
+    });
+  },
+
+  getAllPostsApproved: (req, res) => {
+    Post.getAllPostsApproved((result) => {
+      res.send(result);
+    });
+  },
 
   getPostByUserID: (req, res) => {
     const id = req.params.id;
@@ -14,12 +20,12 @@ module.exports = {
     });
   },
 
-  getById: (req, res) => {
-    const id = req.params.id;
-    Post.getById(id, (result) => {
-      res.send(result);
-    });
-  },
+  // getById: (req, res) => {
+  //   const id = req.params.id;
+  //   Post.getById(id, (result) => {
+  //     res.send(result);
+  //   });
+  // },
 
   insert: (req, res) => {
     const post = req.body;
@@ -39,6 +45,18 @@ module.exports = {
   delete: (req, res) => {
     const id = req.params.id;
     Post.delete(id, (result) => {
+      res.send(result);
+    });
+  },
+
+  search: (req, res) => {
+    const province = req.query.province;
+    const district = req.query.district;
+    const subject = req.query.subject;
+    const method = req.query.method;
+    const audience = req.query.audience;
+
+    Post.search(province, district, subject, method, audience, (result) => {
       res.send(result);
     });
   }

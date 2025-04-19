@@ -8,6 +8,12 @@ module.exports = {
     });
   },
 
+  getAllPostsApproved: (req, res) => {
+    User.getAll((result) => {
+      res.send(result);
+    });
+  },
+
   getById: (req, res) => {
     const id = req.params.id;
     User.getById(id, (result) => {

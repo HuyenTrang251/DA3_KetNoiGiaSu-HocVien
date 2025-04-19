@@ -17,9 +17,19 @@ this.notes = post.notes;
 this.status = post.status;
 this.created_at = post.created_at;
 };
-post.getById = (id, callback) => {
-  const sqlString = "SELECT * FROM post WHERE id_post = ? ";
-  db.query(sqlString, id, (err, result) => {
+post.getAll = (callback) => {
+  const sqlString = "CALL GetAllPostsWithStudentInfo()";
+  db.query(sqlString, (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+    callback(result);
+  });
+};
+
+post.getAllPostsApproved = (callback) => {
+  const sqlString = "CALL GetPostsApproved()";
+  db.query(sqlString, (err, result) => {
     if (err) {
       return callback(err);
     }
@@ -67,6 +77,20 @@ post.delete = (id, callBack) => {
     }
     callBack("xóa post id = " + id + " thành công");
   });
+};
+
+post.search = (province, district, subject, method, audience, callback) => {
+  const sqlString = "CALL SearchPosts(?, ?, ?, ?, ?)";
+  db.query(
+    sqlString,
+    [province, district, subject, method, audience],
+    (err, result) => {
+      if (err) {
+        return callback(err);
+      }
+      callback(result);
+    }
+  );
 };
 
 module.exports = post;
