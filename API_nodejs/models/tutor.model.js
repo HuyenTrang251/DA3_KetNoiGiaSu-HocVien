@@ -23,7 +23,8 @@ tutor.getById = (id, callback) => {
 };
 
 tutor.getAll = (callback) => {
-  const sqlString = "SELECT * FROM tutor ";
+  // const sqlString = "SELECT * FROM tutor ";
+  const sqlString = "CALL GetAllTutorDetails()";
   db.query(sqlString, (err, result) => {
     if (err) {
       return callback(err);
