@@ -38,7 +38,7 @@ router.put('/', upload.single('img'), (req, res, next) => {
   next();
 }, userController.update);
 
-router.delete('/:id',xacthuc(['admin']), userController.delete);
+router.delete('/:id', userController.delete);//xacthuc(['admin'])
 
 router.post('/login', userController.login);
 
