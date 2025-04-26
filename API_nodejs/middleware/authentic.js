@@ -8,18 +8,23 @@ const authentic = (requiredRoles = []) => { // Nhận một mảng các vai trò
 
         if (token == null) return res.sendStatus(401);
 
-        jwt.verify(token, "SECRET_KEY", (err, user) => { 
-            if (err) return res.sendStatus(403);
+        const decoded = jwt.verify(token, "SECRET_KEY");
+        console.log("Decoded Token Payload:", decoded); 
+        if(!decoded.userId) {
+            return res.status(403).send({ message: 'Token không chứa userId' });
+        }
+        req.userId = decoded.userId; // Lưu userId vào req.userId
+        req.userRole = decoded.role;
+        console.log(req.userRole);
+        // req.userName = decoded.name;
+        // req.img = decoded.img;
 
-            req.user = user;
+        // Kiểm tra quyền truy cập
+        if (requiredRoles.length > 0 && !requiredRoles.includes(req.userRole)) {
+            return res.status(403).send({ message: "Không có quyền truy cập" });
+        }
 
-            // Kiểm tra quyền truy cập
-            if (requiredRoles.length > 0 && !requiredRoles.includes(user.role)) {
-                return res.status(403).send({ message: "Không có quyền truy cập" });
-            }
-
-            next();
-        });
+        next();
     };
 };
 

@@ -17,9 +17,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-
+router.get('/me', xacthuc(['admin', 'học viên', 'gia sư']), userController.getUserLogined);  //router cụ thể khai báo trước
 router.get('/', userController.getAll);
-router.get('/:id',xacthuc(['admin', 'học viên']), userController.getById);
+router.get('/:id',xacthuc(['admin', 'học viên']), userController.getById);                   // router tổng quát khai báo sau
 
 // Sử dụng middleware upload.single trước userController.insert và userController.update
 router.post('/img', upload.single('img'), (req, res, next) => {

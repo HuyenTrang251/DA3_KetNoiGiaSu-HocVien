@@ -1,4 +1,5 @@
 const Response = require("../models/response.model");
+const Tutor = require("../models/tutor.model");
 
 module.exports = {
   getAll: (req, res) => {
@@ -15,9 +16,37 @@ module.exports = {
   },
 
   insert: (req, res) => {
-    const response = req.body;
-    Response.insert(response, (result) => {
-      res.send(result);
+    const { id_post, message } = req.body;
+    const userId = req.userId; // Lấy userId từ middleware xác thực
+    console.log("Controller insert called with userId:", userId);
+    console.log("Request body:", req.body); //
+
+    Tutor.getTutorId(userId, (err, id_tutor) => {
+        if (err) {
+            return res.status(500).send({ message: "Lỗi máy chủ khi lấy id_tutor" });
+        }
+        if (!id_tutor) {
+            return res.status(400).send({ message: "Không tìm thấy gia sư với userId này" });
+        }
+
+        // Bây giờ bạn đã có id_tutor, bạn có thể tạo response
+        const newResponse = {
+            id_post,
+            id_tutor,
+            message,
+        };
+
+        Response.insert(newResponse, (result) => { // Sử dụng model Response để tạo response
+            if (result.error)
+            {
+                return res.status(500).send({ message: "Lỗi máy chủ khi tạo response" });
+            }
+            res.status(201).send({
+                success: true,
+                message: "Đề nghị dạy đã được gửi thành công",
+                data: result,
+            });
+        });
     });
   },
 

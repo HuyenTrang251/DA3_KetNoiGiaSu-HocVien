@@ -33,6 +33,7 @@ response.insert = (response, callBack) => {
       callBack(err);
       return;
     }
+    console.log("Chèn thành công. Kết quả:", res);
     callBack({ id: res.insertId, ...response });
   });
 };

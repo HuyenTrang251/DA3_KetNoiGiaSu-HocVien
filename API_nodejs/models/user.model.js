@@ -12,14 +12,6 @@ const user = (user) => {
   this.role = user.role;
 };
 user.getById = (id, callback) => {
-  // const sqlString = "SELECT * FROM user WHERE id_user = ? ";
-  // db.query(sqlString, id, (err, result) => {
-  //   if (err) {
-  //     return callback(err);
-  //   }
-  //   callback(result);
-  // });
-
   db.query("CALL GetUserById(?)", id, (err, result) => {
     if (err) {
       return callback(err);
@@ -111,6 +103,17 @@ user.delete = (id, callBack) => {
     callBack("Xoá user id = "+ id +" thành công");
   })
 };
+
+user.getUserLogined = (id, callback) => {
+  const sqlString = 'SELECT id_user AS id, full_name AS name, img, role FROM user WHERE id_user = ?';
+  db.query(sqlString, id, (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+    callback(result[0]);
+  })      
+};
+
 
 user.verifyPassword = (username, password, callback) => {
   db.query("CALL VerifyUserPassword(?)", username, (err, results) => {

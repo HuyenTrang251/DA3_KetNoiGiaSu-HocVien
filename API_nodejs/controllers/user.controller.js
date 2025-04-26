@@ -45,6 +45,17 @@ module.exports = {
     });
   },
 
+  getUserLogined: (req, res) => {
+    const id = req.userId;
+    User.getUserLogined(id, (result) => {
+      if (result) {
+        res.status(200).send(result);
+      } else {
+        res.status(404).send({ message: "Không tìm thấy người dùng" }); // Gửi 404 nếu không tìm thấy
+    }
+    });
+  },
+
   login: (req, res) => {
     // const SECRET_KEY = process.env.SECRET_KEY;
     const {username, password} = req.body;
@@ -54,7 +65,7 @@ module.exports = {
       }
       if (result.success) {
         const token = jwt.sign(
-          {userId: result.userId, role: result.role},
+          {userId: result.userId, role: result.role },
           "SECRET_KEY", {expiresIn: "1h"}
         );
         res.send({success: true, token: token, userdata: {role: result.role, id: result.userId, img: result.img, name: result.name }});
