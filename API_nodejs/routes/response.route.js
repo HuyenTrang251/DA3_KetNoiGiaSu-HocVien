@@ -8,6 +8,7 @@ router.get('/', responseController.getAll);
 router.get('/:id', responseController.getById);
 router.post('/', xacthuc(['gia sư']), responseController.insert);
 router.put('/:id', responseController.update);
+router.put('/status/:id', responseController.updateStatus);
 router.delete('/:id', responseController.delete);
 
 module.exports = router;

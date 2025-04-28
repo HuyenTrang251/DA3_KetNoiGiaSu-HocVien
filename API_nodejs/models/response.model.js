@@ -49,6 +49,17 @@ response.update = (response, id, callBack) => {
   });
 };
 
+response.updateStatus = (id, status, callBack) => {
+  const sqlString = "UPDATE response SET status = ? WHERE id_response = ?";
+  db.query(sqlString, [status, id], (err, res) => {
+    if (err) 
+    {
+      return callBack(err);
+    }
+    callBack(null, { message: `Cập nhật trạng thái phản hồi id = ${id} thành công`, status: "OK" });
+  })
+};
+
 response.delete = (id, callBack) => {
   db.query("DELETE FROM response WHERE id_response = ?", id, (err, res) => {
     if (err) {

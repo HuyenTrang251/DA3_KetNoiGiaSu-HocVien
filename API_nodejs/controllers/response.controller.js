@@ -58,6 +58,14 @@ module.exports = {
     });
   },
 
+  updateStatus: (req, res) => {
+    const id = req.params.id;
+    const status = req.body.status;
+    Response.updateStatus(id, status, (result) => {
+      res.send(result);
+    });
+  },
+
   delete: (req, res) => {
     const id = req.params.id;
     Response.delete(id, (result) => {
