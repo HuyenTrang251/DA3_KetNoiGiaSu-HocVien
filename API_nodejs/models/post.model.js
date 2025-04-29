@@ -48,6 +48,7 @@ post.getPostByUserID = (id, callback) => {
 };
 
 post.insert = (post, callBack) => {
+  console.log("Đối tượng post trước query:", post);
   const sqlString = "INSERT INTO post SET ?";
   db.query(sqlString, post, (err, res) => {
     if (err) {

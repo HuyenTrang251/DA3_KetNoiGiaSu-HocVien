@@ -34,5 +34,15 @@ module.exports = {
     Student.delete(id, (result) => {
       res.send(result);
     });
-  }
+  },
+
+  getStudentId: (req, res) => { 
+    const id = req.params.id;
+    Student.getStudentId(id, (err, studentId) => {
+      if (err) {
+        return res.status(500).send({ message: err.message });
+      }
+      res.json({ id_student: studentId });
+    });
+  },
 };

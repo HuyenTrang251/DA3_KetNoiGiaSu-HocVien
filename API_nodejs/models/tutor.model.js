@@ -68,15 +68,14 @@ tutor.delete = (id, callBack) => {
 tutor.getTutorId = (userId, callback) => {
   const sql = 'SELECT id_tutor FROM tutor WHERE id_user = ?';
   db.query(sql, [userId], (err, results) => {
-      if (err) {
-          return callback(err);
-      }
-      if (results.length > 0) {
-          callback(null, results[0].id_tutor); 
-          console.log(results[0].id_tutor);// Trả về id_tutor
-      } else {
-          callback(null, null); // Không tìm thấy tutor với userId này
-      }
+    if (err) {
+        return callback(err);
+    }
+    if (results.length > 0) {
+      callback(null, results[0].id_tutor);
+    } else {
+      callback(new Error("Không tìm thấy gia sư"), null);
+    }
   });
 };
 module.exports = tutor;
