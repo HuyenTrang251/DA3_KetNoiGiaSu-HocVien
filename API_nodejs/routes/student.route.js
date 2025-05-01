@@ -4,6 +4,7 @@ const studentController = require("../controllers/student.controller");
 
 /* GET users listing. */
 router.get('/', studentController.getAll);
+router.get('/getAllForAdminPost', studentController.getAllForAdminPost);
 router.get('/:id', studentController.getById);
 router.post('/', studentController.insert);
 router.put('/:id', studentController.update);

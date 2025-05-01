@@ -20,6 +20,12 @@ module.exports = {
     });
   },
 
+  getAllPostsWithResponse: (req, res) => {
+    Post.getAllPostsWithResponse((result) => {
+      res.send(result);
+    });
+  },
+
   // getById: (req, res) => {
   //   const id = req.params.id;
   //   Post.getById(id, (result) => {
@@ -38,6 +44,14 @@ module.exports = {
     const post = req.body;
     const id = req.params.id;
     Post.update(post, id, (result) => {
+      res.send(result);
+    });
+  },
+
+  updateStatus: (req, res) => {
+    const id = req.params.id;
+    const status = req.body.status;
+    Post.updateStatus(id, status, (result) => {
       res.send(result);
     });
   },

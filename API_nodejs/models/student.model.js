@@ -25,6 +25,16 @@ student.getAll = (callback) => {
   });
 };
 
+student.getAllForAdminPost = (callback) => {
+  const sqlString = "CALL GetAllStudentsForAdminPost()";
+  db.query(sqlString, (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+    callback(result);
+  });
+};
+
 student.insert = (student, callBack) => {
   const sqlString = "INSERT INTO student SET ?";
   db.query(sqlString, student, (err, res) => {

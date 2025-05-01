@@ -7,6 +7,12 @@ module.exports = {
     });
   },
 
+  getAllForAdminPost: (req, res) => {
+    Student.getAllForAdminPost((result) => {
+      res.send(result);
+    });
+  },
+
   getById: (req, res) => {
     const id = req.params.id;
     Student.getById(id, (result) => {

@@ -47,8 +47,18 @@ post.getPostByUserID = (id, callback) => {
   });
 };
 
+post.getAllPostsWithResponse = (callback) => {
+  // const sqlString = "SELECT * FROM post ";
+  db.query("CALL GetAllPostsWithStudentAndResponses()", (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+    callback(result);
+  });
+};
+
 post.insert = (post, callBack) => {
-  console.log("Đối tượng post trước query:", post);
+  // console.log("Đối tượng post trước query:", post);
   const sqlString = "INSERT INTO post SET ?";
   db.query(sqlString, post, (err, res) => {
     if (err) {
@@ -68,6 +78,17 @@ post.update = (post, id, callBack) => {
     }
     callBack("cập nhật post id = " + id + " thành công");
   });
+};
+
+post.updateStatus = (id, status, callBack) => {
+  const sqlString = "CALL UpdatePostStatus(?,?)";
+  db.query(sqlString, [id, status], (err, res) => {
+    if (err) 
+    {
+      return callBack(err);
+    }
+    callBack(null, { message: `Cập nhật trạng thái bài đăng id = ${id} thành công`, status: "OK" });
+  })
 };
 
 post.delete = (id, callBack) => {
