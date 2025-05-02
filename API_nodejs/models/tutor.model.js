@@ -24,7 +24,7 @@ tutor.getById = (id, callback) => {
 
 tutor.getAll = (callback) => {
   // const sqlString = "SELECT * FROM tutor ";
-  const sqlString = "CALL GetAllTutorDetails()";
+  const sqlString = "CALL GetAllTutorsDetails()";
   db.query(sqlString, (err, result) => {
     if (err) {
       return callback(err);
@@ -53,6 +53,17 @@ tutor.update = (tutor, id, callBack) => {
     }
     callBack("cập nhật tutor id = " + id + " thành công");
   });
+};
+
+tutor.updateStatus = (id, status, callBack) => {
+  const sqlString = "CALL UpdateTutorStatus(?,?)";
+  db.query(sqlString, [id, status], (err, res) => {
+    if (err) 
+    {
+      return callBack(err);
+    }
+    callBack(null, { message: `Cập nhật trạng thái gia sư id = ${id} thành công`, status: "OK" });
+  })
 };
 
 tutor.delete = (id, callBack) => {

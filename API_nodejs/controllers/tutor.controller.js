@@ -29,6 +29,14 @@ module.exports = {
     });
   },
 
+  updateStatus: (req, res) => {
+    const id = req.params.id;
+    const status = req.body.status;
+    Tutor.updateStatus(id, status, (result) => {
+      res.send(result);
+    });
+  },
+
   delete: (req, res) => {
     const id = req.params.id;
     Tutor.delete(id, (result) => {
