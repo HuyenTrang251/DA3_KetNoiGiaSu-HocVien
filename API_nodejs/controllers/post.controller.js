@@ -26,6 +26,12 @@ module.exports = {
     });
   },
 
+  getAllPostsWithOffer: (req, res) => {
+    Post.getAllPostsWithOffer((result) => {
+      res.send(result);
+    });
+  },
+
   // getById: (req, res) => {
   //   const id = req.params.id;
   //   Post.getById(id, (result) => {

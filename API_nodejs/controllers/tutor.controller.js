@@ -7,6 +7,12 @@ module.exports = {
     });
   },
 
+  getAllTutorApproved: (req, res) => {
+    Tutor.getAllTutorApproved((result) => {
+      res.send(result);
+    });
+  },
+
   getById: (req, res) => {
     const id = req.params.id;
     Tutor.getById(id, (result) => {
@@ -44,17 +50,17 @@ module.exports = {
     });
   },
 
-  // getTutorId: (req, res) => {
-  //   const id = req.params.id;
-  //   Tutor.getTutorId(id, (err, tutorId) => {
-  //     if (err) {
-  //       return err;
-  //     }
-  //     if (tutorId) {
-  //       return res.status(200).json({ id_tutor: tutorId });
-  //     } else {
-  //       return res.status(404).json({ message: 'Không tìm thấy gia sư' });
-  //     }
-  //   });
-  // },
+  getTutorId: (req, res) => {
+    const id = req.params.id;
+    Tutor.getTutorId(id, (err, tutorId) => {
+      if (err) {
+        return err;
+      }
+      if (tutorId) {
+        return res.status(200).json({ id_tutor: tutorId });
+      } else {
+        return res.status(404).json({ message: 'Không tìm thấy gia sư' });
+      }
+    });
+  },
 };

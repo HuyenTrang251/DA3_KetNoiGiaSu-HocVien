@@ -56,6 +56,14 @@ module.exports = {
     });
   },
 
+  updatePassword: (req, res) => {
+    const id = req.params.id;
+    const password = req.body.password;
+    User.updatePassword(id, password, (result) => {
+      res.send(result);
+    });
+  },
+
   login: (req, res) => {
     // const SECRET_KEY = process.env.SECRET_KEY;
     const {username, password} = req.body;

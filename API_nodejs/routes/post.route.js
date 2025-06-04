@@ -8,6 +8,7 @@ router.get('/', postController.getAll);
 router.get('/approved', postController.getAllPostsApproved);
 router.get('/getByIdUser/:id', xacthuc(['học viên']), postController.getPostByUserID);
 router.get('/getAllWithResponse', postController.getAllPostsWithResponse);
+router.get('/getAllWithOffer', postController.getAllPostsWithOffer);
 // router.get('/:id', postController.getById);
 router.post('/', postController.insert);
 router.put('/:id', postController.update);

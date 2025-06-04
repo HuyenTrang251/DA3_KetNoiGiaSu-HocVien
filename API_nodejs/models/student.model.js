@@ -6,7 +6,7 @@ this.class = student.class;
 this.address = student.address;
 };
 student.getById = (id, callback) => {
-  const sqlString = "SELECT * FROM student WHERE id_student = ? ";
+  const sqlString = "CALL GetStudentInfoById(?)";
   db.query(sqlString, id, (err, result) => {
     if (err) {
       return callback(err);
@@ -16,7 +16,7 @@ student.getById = (id, callback) => {
 };
 
 student.getAll = (callback) => {
-  const sqlString = "SELECT * FROM student ";
+  const sqlString = "CALL GetStudentInfo();";
   db.query(sqlString, (err, result) => {
     if (err) {
       return callback(err);
@@ -35,14 +35,22 @@ student.getAllForAdminPost = (callback) => {
   });
 };
 
-student.insert = (student, callBack) => {
-  const sqlString = "INSERT INTO student SET ?";
+student.insert = (studentData, callBack) => {
+  const sqlString = "CALL AddStudent(?, ?, ?)";
+  const student = [
+    studentData.id_user,   
+    studentData.class,     
+    studentData.address   
+  ];
+
   db.query(sqlString, student, (err, res) => {
     if (err) {
-      callBack(err);
+      console.error("Error calling AddStudentFromExistingUser:", err);
+      callBack(err, null); 
       return;
     }
-    callBack({ id: res.insertId, ...student });
+    console.log("Thêm học viên thành công user ID:", studentData.id_user);
+    callBack(null, { message: "Student added successfully", id_user: studentData.id_user, ...studentData });
   });
 };
 
@@ -85,7 +93,5 @@ student.getStudentId = (userId, callback) => {
     }
   });
 };
-
-
 
 module.exports = student;

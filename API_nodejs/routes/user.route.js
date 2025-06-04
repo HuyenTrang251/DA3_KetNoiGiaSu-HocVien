@@ -20,6 +20,7 @@ const upload = multer({ storage: storage });
 router.get('/me', xacthuc(['admin', 'học viên', 'gia sư']), userController.getUserLogined);  //router cụ thể khai báo trước
 router.get('/', userController.getAll);
 router.get('/:id',xacthuc(['admin', 'học viên']), userController.getById);                   // router tổng quát khai báo sau
+router.put('/password/:id', userController.updatePassword);
 
 // Sử dụng middleware upload.single trước userController.insert và userController.update
 router.post('/img', upload.single('img'), (req, res, next) => {
@@ -39,7 +40,6 @@ router.put('/', upload.single('img'), (req, res, next) => {
 }, userController.update);
 
 router.delete('/:id', userController.delete);//xacthuc(['admin'])
-
 router.post('/login', userController.login);
 
 module.exports = router;

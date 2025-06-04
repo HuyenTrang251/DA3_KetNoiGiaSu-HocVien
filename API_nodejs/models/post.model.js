@@ -57,6 +57,16 @@ post.getAllPostsWithResponse = (callback) => {
   });
 };
 
+post.getAllPostsWithOffer = (callback) => {
+  const sqlString = "CALL GetAllPostsWithStudentAndResponsesAndOffer()";
+  db.query(sqlString, (err, result) => {
+    if (err) {
+      return callback(err);
+    }
+    callback(result);
+  });
+};
+
 post.insert = (post, callBack) => {
   // console.log("Đối tượng post trước query:", post);
   const sqlString = "INSERT INTO post SET ?";

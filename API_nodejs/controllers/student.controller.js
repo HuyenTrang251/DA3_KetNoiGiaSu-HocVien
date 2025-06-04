@@ -21,8 +21,8 @@ module.exports = {
   },
 
   insert: (req, res) => {
-    const student = req.body;
-    Student.insert(student, (result) => {
+    const studentData = req.body;
+    Student.insert(studentData, (result) => {
       res.send(result);
     });
   },
